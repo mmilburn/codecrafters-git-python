@@ -1,10 +1,31 @@
+import hashlib
 import os
 import sys
 import zlib
+from typing import Optional
 
 GIT_ROOT_PATH = ".git"
 GIT_OBJECTS_PATH = os.path.join(GIT_ROOT_PATH, "objects")
 GIT_REFS_PATH = os.path.join(GIT_ROOT_PATH, "refs")
+
+
+def read_file(directory, filename) -> Optional[bytes]:
+    content = None
+    file_path = os.path.join(directory, filename)
+    if os.path.isfile(file_path):
+        try:
+            with open(file_path, 'r') as file:
+                content = file.read()
+        except Exception as e:
+            print(f"Exception occurred: {type(e).__name__}: {e}", file=sys.stderr)
+    else:
+        print(f"File not found: {file_path}", file=sys.stderr)
+    return content
+
+
+def create_blob_string(content):
+    size = len(content)
+    return f"blob {size}\0{content}".encode("utf-8")
 
 
 def extract_content(blob_string):
@@ -44,6 +65,22 @@ def main():
                     print(content, end="")
             except Exception as e:
                 print(f"Exception occurred: {type(e).__name__}: {e}", file=sys.stderr)
+    elif command == "hash-object":
+        file = sys.argv[-1]
+        blob = create_blob_string(read_file("", file))
+        digest = hashlib.sha1(blob).hexdigest()
+        hash_dir = digest[:2]
+        object_file = digest[2:]
+        object_dir = os.path.join(GIT_OBJECTS_PATH, hash_dir)
+        if not os.path.exists(object_dir):
+            os.mkdir(object_dir)
+        object_path = os.path.join(object_dir, object_file)
+        try:
+            with open(object_path, "wb") as f:
+                f.write(zlib.compress(blob))
+        except Exception as e:
+            print(f"Exception occurred: {type(e).__name__}: {e}", file=sys.stderr)
+        print(digest)
     else:
         raise RuntimeError(f"Unknown command #{command}")
 
