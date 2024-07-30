@@ -57,6 +57,9 @@ def write_blob(content):
 def write_tree(content):
     return _write_object(_create_entry("tree", content))
 
+def write_commit(content):
+    return _write_object(_create_entry("commit", content))
+
 def read_file(file_path):
     content = None
     if os.path.isfile(file_path):

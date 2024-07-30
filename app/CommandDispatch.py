@@ -1,9 +1,10 @@
+from app.util import *
+from typing import Optional
 import inspect
 import os
 import sys
+import time
 import zlib
-from typing import Optional
-from app.util import *
 
 class CommandDispatch:
 
@@ -75,3 +76,32 @@ class CommandDispatch:
 
     def cmd_write_tree(self, *args, **kwargs):
         return write_tree(create_tree(os.getcwd())).hexdigest() + "\n"
+
+    def cmd_commit_tree(self, *args, **kwargs):
+        tree_sha = args[-1][0]
+        arg_list = args[-1]
+        commit_sha, message = "", ""
+        for index in range(len(arg_list)):
+            if  arg_list[index] == "-p":
+                commit_sha = arg_list[index + 1]
+            elif arg_list[index] == "-m":
+                message = arg_list[index + 1].replace("\"","").replace("'", "")
+        print(f"tree_sha: {tree_sha} commit_sha: {commit_sha} message: {message}", file=sys.stderr)
+        # Courtesy Ben Hoyt https://benhoyt.com/writings/pygit/#committing
+        timestamp = int(time.mktime(time.localtime()))
+        utc_offset = -time.timezone
+        author_time = "{} {}{:02}{:02}".format(
+                timestamp,
+                '+' if utc_offset > 0 else '-',
+                abs(utc_offset) // 3600,
+                (abs(utc_offset) // 60) % 60)
+        content = ["tree " + tree_sha]
+        # parent commit
+        if commit_sha:
+            content.append("parent " + commit_sha)
+        content.append(f"author Mark <mark@example.com> {author_time}")
+        content.append(f"committer Mark <mark@example.com> {author_time}")
+        content.append("")
+        content.append(message)
+        content.append("")
+        return write_commit("\n".join(content).encode()).hexdigest() + "\n"
