@@ -62,6 +62,7 @@ class CommandDispatch:
                     prev = 0
                     result = ""
                     while null_index != -1:
+                        print(content[prev:null_index], file=sys.stderr)
                         mode, name = content[prev:null_index].decode("utf-8").split(" ")
                         digest = content[null_index + 1: null_index + 21]
                         prev = null_index + 21
