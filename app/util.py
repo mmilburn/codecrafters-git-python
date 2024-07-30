@@ -77,6 +77,7 @@ def is_executable(file_path):
 
 def get_mode(file_path):
     if os.path.isdir(file_path):
+        # Official implementation doesn't have a leading zero!
         return "40000"
     else:
         if is_symlink(file_path):
@@ -85,10 +86,6 @@ def get_mode(file_path):
             return "100755"
         else:
             return "100644"
-
-def dir_generator(path):
-    for (paths, dirs, files) in filter(lambda r: GIT_DIR not in r[0], os.walk(path, topdown=False)):
-        yield paths
 
 def create_tree(path):
     entries = {}
