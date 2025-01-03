@@ -1,10 +1,10 @@
-from app.util import *
-from typing import Optional
 import inspect
-import os
-import sys
 import time
-import zlib
+import urllib.request
+from pathlib import Path
+
+from app.util import *
+
 
 class CommandDispatch:
 
@@ -29,11 +29,12 @@ class CommandDispatch:
         return self.dispatch_dict.keys()
 
     def cmd_init(self, *args, **kwargs):
-        os.mkdir(GIT_DIR)
-        os.mkdir(GIT_OBJECTS_PATH)
-        os.mkdir(GIT_REFS_PATH)
-        with open(".git/HEAD", "w") as f:
-            f.write("ref: refs/heads/main\n")
+        # print(f"args: {args}", file=sys.stderr)
+        parent = Path(args[-1][-1]) if args and args[-1] else Path(".")
+        # print(f"parent: {parent}", file=sys.stderr)
+        (parent / ".git" / "objects").mkdir(parents=True)
+        (parent / ".git" / "refs" / "heads").mkdir(parents=True)
+        (parent / ".git" / "HEAD").write_text("ref: refs/heads/main\n")
         return "Initialized git directory\n"
 
     def cmd_cat_file(self, *args, **kwargs):
