@@ -1,5 +1,7 @@
 import argparse
+
 from app.CommandDispatch import CommandDispatch
+
 
 def main():
     command = CommandDispatch()
