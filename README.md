@@ -6,12 +6,12 @@ This is a finished Python implementation for the
 - [x] `init` 
 - [x] `cat-file`
 - [x] `hash-object` 
-- [x] `ls-tre` 
+- [x] `ls-tree` 
 - [x] `write-tree`
 - [x] `commit-tree`
 - [x] `clone`
 
-# Running locally
+# Running Locally
 
 The `your_git.sh` script is expected to operate on the `.git` folder inside the
 current working directory. If you're running this inside the root of this
