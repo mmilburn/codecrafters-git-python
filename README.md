@@ -1,6 +1,8 @@
 # About the Project
 This is a finished Python implementation for the 
 ["Build Your Own Git" Challenge](https://codecrafters.io/challenges/git).
+This code implements functionality for all stages (and extensions) of the
+challenge as of 2025-02-13. 
 
 ## What `git` Commands Are Implemented?
 - [x] `init` 
@@ -35,7 +37,7 @@ alias mygit=/path/to/your/repo/your_git.sh
 mkdir -p /tmp/testing && cd /tmp/testing
 mygit init
 ```
-# Demo Video
-Here's a video of the code being run in the codecrafters test environment.
+# Test Run Video
+Here's a video of the code being run in the codecrafters test environment:
 
 https://github.com/user-attachments/assets/31761ebf-4cc8-40fb-bc3b-a3427e6b98dd
