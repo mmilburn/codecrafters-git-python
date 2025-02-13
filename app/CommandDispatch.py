@@ -101,13 +101,12 @@ class CommandDispatch:
 
     # Courtesy ggzor -- https://app.codecrafters.io/users/ggzor
     def cmd_clone(self, *args, **kwargs):
-        """ The fetch command underlies two other commonly used commands. clone is used to set up a
-        new repository that’s a copy of an existing one, and this can be accomplished using the init,
-        remote, fetch and reset commands. --Building Git
-        `init` is already implemented.
-        I don't think we need `remote add` since our clone operation is a one-shot deal.
-        Likewise, I don't think a reset is necessary.
-        """
+        # The fetch command underlies two other commonly used commands. clone is used to set up a
+        # new repository that’s a copy of an existing one, and this can be accomplished using the init,
+        # remote, fetch and reset commands. --Building Git
+        # `init` is already implemented.
+        # I don't think we need `remote add` since our clone operation is a one-shot deal.
+        # Likewise, I don't think a reset is necessary.
         clone_url = args[-1][-2]
         parent = Path(args[-1][-1])
         print(f"clone_url: {clone_url} clone_dir: {parent}", file=sys.stderr)
