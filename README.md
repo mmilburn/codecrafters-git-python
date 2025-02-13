@@ -8,7 +8,7 @@ This is a finished Python implementation for the
 - [x] `hash-object` 
 - [x] `ls-tree` 
 - [x] `write-tree`
-- [x] `commit-tree`
+- [x] `commit-tree` (`author` and `committer` are hardcoded, `message` is not)
 - [x] `clone`
 
 # Running Locally
